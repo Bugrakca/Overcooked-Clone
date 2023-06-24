@@ -10,6 +10,27 @@ public class Player : MonoBehaviour
     
     private void Update()
     {
+        HandleMovement();
+        HandleInteractions();
+    }
+
+    public bool IsWalking()
+    {
+        return _isWalking;
+    }
+
+    private void HandleInteractions()
+    {
+        Vector2 inputVector = gameInput.GetNormalizedMovementVector();
+        Vector3 moveDir = new Vector3(inputVector.x, 0f, inputVector.y);
+
+        float interactDistance = 2f;
+
+        Physics.Raycast(transform.position, moveDir, out RaycastHit hit, interactDistance);
+    }
+
+    private void HandleMovement()
+    {
         Vector2 inputVector = gameInput.GetNormalizedMovementVector();
         Vector3 moveDir = new Vector3(inputVector.x, 0f, inputVector.y);
 
@@ -43,10 +64,5 @@ public class Player : MonoBehaviour
         
         if (_isWalking)
             transform.forward = Vector3.Slerp(transform.forward, moveDir, Time.deltaTime * rotateSpeed);
-    }
-
-    public bool IsWalking()
-    {
-        return _isWalking;
     }
 }
