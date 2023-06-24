@@ -6,7 +6,9 @@ public class PlayerAnimator : MonoBehaviour
 
     private const string IsWalking = "IsWalking";
     private Animator _animator;
+    //Cached property index
     private static readonly int Walking = Animator.StringToHash(IsWalking);
+
 
     private void Awake()
     {
