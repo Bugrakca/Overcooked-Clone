@@ -7,7 +7,7 @@ public class InputReader : ScriptableObject, PlayerInputActions.IPlayerActions
 {
     public event Action<Vector2> MoveEvent;
 
-    public event Action InteractionEvent;
+    public event Action InteractEvent;
 
     private PlayerInputActions _playerInput;
 
@@ -30,7 +30,7 @@ public class InputReader : ScriptableObject, PlayerInputActions.IPlayerActions
     {
         if (context.phase == InputActionPhase.Performed)
         {
-            InteractionEvent?.Invoke();
+            InteractEvent?.Invoke();
         }
     }
 
