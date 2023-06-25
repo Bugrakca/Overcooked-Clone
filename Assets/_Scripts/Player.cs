@@ -4,30 +4,25 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
     [SerializeField] private float moveSpeed = 10f;
-    [SerializeField] private GameInput gameInput;
+    [SerializeField] private InputReader input;
 
     private Vector3 _lastInteractDir;
+    private Vector2 _inputVector;
     private bool _isWalking;
-    
+
+    private void Start()
+    {
+        input.MoveEvent += HandleMovement;
+        input.InteractEvent += HandleInteract;
+    }
+
     private void Update()
     {
-        HandleMovement();
-        HandleInteractions();
+        Movement();
     }
 
-    public bool IsWalking()
+    private void HandleInteract()
     {
-        return _isWalking;
-    }
-
-    private void HandleInteractions()
-    {
-        Vector2 inputVector = gameInput.GetNormalizedMovementVector();
-        Vector3 moveDir = new Vector3(inputVector.x, 0f, inputVector.y);
-
-        if (moveDir != Vector3.zero)
-            _lastInteractDir = moveDir;
-        
         float interactDistance = 2f;
 
         if (Physics.Raycast(transform.position, _lastInteractDir, out RaycastHit hit, interactDistance))
@@ -37,14 +32,19 @@ public class Player : MonoBehaviour
                 clearCounter.Interact();
             }
         }
-        else 
+        else
+        {
             Debug.Log("-");
+        }
     }
 
-    private void HandleMovement()
+
+    private void Movement()
     {
-        Vector2 inputVector = gameInput.GetNormalizedMovementVector();
-        Vector3 moveDir = new Vector3(inputVector.x, 0f, inputVector.y);
+        Vector3 moveDir = new Vector3(_inputVector.x, 0f, _inputVector.y);
+        
+        if (moveDir != Vector3.zero)
+            _lastInteractDir = moveDir;
 
         float playerRadius = 0.7f;
         float moveDistance = moveSpeed * Time.deltaTime;
@@ -76,5 +76,15 @@ public class Player : MonoBehaviour
         
         if (_isWalking)
             transform.forward = Vector3.Slerp(transform.forward, moveDir, Time.deltaTime * rotateSpeed);
+    }
+
+    private void HandleMovement (Vector2 inputVector)
+    {
+        _inputVector = inputVector;
+    }
+
+    public bool IsWalking()
+    {
+        return _isWalking;
     }
 }
