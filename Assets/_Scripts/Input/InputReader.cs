@@ -5,10 +5,10 @@ using UnityEngine.InputSystem;
 [CreateAssetMenu(menuName = "InputReader")]
 public class InputReader : ScriptableObject, PlayerInputActions.IPlayerActions
 {
-    public event Action<Vector2> MoveEvent;
+    public event EventHandler<Vector2> MoveEvent;
 
-    public event Action InteractEvent;
-
+    public event EventHandler InteractEvent;
+    
     private PlayerInputActions _playerInput;
 
     private void OnEnable()
@@ -23,14 +23,14 @@ public class InputReader : ScriptableObject, PlayerInputActions.IPlayerActions
 
     public void OnMove (InputAction.CallbackContext context)
     {
-        MoveEvent?.Invoke(context.ReadValue<Vector2>());
+        MoveEvent?.Invoke(this, context.ReadValue<Vector2>());
     }
 
     public void OnInteract (InputAction.CallbackContext context)
     {
         if (context.phase == InputActionPhase.Performed)
         {
-            InteractEvent?.Invoke();
+            InteractEvent?.Invoke(this, EventArgs.Empty);
         }
     }
 
