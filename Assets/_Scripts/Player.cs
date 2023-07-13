@@ -5,7 +5,7 @@ public class Player : MonoBehaviour
 {
     public static Player Instance { get; private set; }
     
-    public event EventHandler<OnSelectedCounterChangedEventArgs> OnSelectedCounterChanged;
+    public event EventHandler<OnSelectedCounterChangedEventArgs> OnSelectedCounterChanged = delegate {  };
     public class OnSelectedCounterChangedEventArgs : EventArgs
     {
         public ClearCounter selectedCounter;
@@ -21,9 +21,10 @@ public class Player : MonoBehaviour
 
     private void Awake()
     {
-        if (Instance != null)
+        if (Instance != null && Instance != this)
         {
             Debug.LogError("There is more than one Player instance");
+            Destroy(this);
         }
 
         Instance = this;
@@ -32,7 +33,7 @@ public class Player : MonoBehaviour
     private void Start()
     {
         input.MoveEvent += OnHandleMovement;
-        input.InteractEvent += OnInteract;
+        input.InteractEvent += HandleInteract;
     }
 
     private void Update()
@@ -103,13 +104,18 @@ public class Player : MonoBehaviour
 
         _isWalking = moveDir != Vector3.zero;
 
+        HandleRotation(moveDir);
+    }
+
+    private void HandleRotation (Vector3 moveDir)
+    {
         float rotateSpeed = 10f;
 
         if (_isWalking)
             transform.forward = Vector3.Slerp(transform.forward, moveDir, Time.deltaTime * rotateSpeed);
     }
 
-    private void OnInteract (object sender, EventArgs e)
+    private void HandleInteract (object sender, EventArgs e)
     {
         if (_selectedCounter != null)
             _selectedCounter.Interact();
@@ -124,7 +130,7 @@ public class Player : MonoBehaviour
     {
         _selectedCounter = selectedCounter;
         
-        OnSelectedCounterChanged?.Invoke(this,
+        OnSelectedCounterChanged.Invoke(this,
             new OnSelectedCounterChangedEventArgs { selectedCounter = _selectedCounter });
     }
 
