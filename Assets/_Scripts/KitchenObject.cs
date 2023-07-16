@@ -11,20 +11,21 @@ public class KitchenObject : MonoBehaviour
         return kitchenObjectsSO;
     }
 
-    public void SetKitchenObjectParent (IKitchenObjectParent kithObjectParent)
+    public void SetKitchenObjectParent (IKitchenObjectParent kitchenObjectParent)
     {
         if (_kitchenObjectParent != null)
         {
             _kitchenObjectParent.ClearKitchenObject();
         }
 
-        _kitchenObjectParent = kithObjectParent;
-        if (kithObjectParent.HasKitchenObject())
+        _kitchenObjectParent = kitchenObjectParent;
+        if (kitchenObjectParent.HasKitchenObject())
         {
             Debug.LogError("IKitchenObjectParent already has a kitchen object!");
         }
-        kithObjectParent.SetKitchenObject(this);
-        transform.parent = kithObjectParent.GetKitchenObjectFollowTransform();
+
+        kitchenObjectParent.SetKitchenObject(this);
+        transform.parent = kitchenObjectParent.GetKitchenObjectFollowTransform();
         transform.localPosition = Vector3.zero;
     }
 

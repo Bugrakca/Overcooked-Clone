@@ -4,11 +4,12 @@ using UnityEngine;
 public class Player : MonoBehaviour, IKitchenObjectParent
 {
     public static Player Instance { get; private set; }
-    
-    public event EventHandler<OnSelectedCounterChangedEventArgs> OnSelectedCounterChanged = delegate {  };
+
+    public event EventHandler<OnSelectedCounterChangedEventArgs> OnSelectedCounterChanged = delegate { };
+
     public class OnSelectedCounterChangedEventArgs : EventArgs
     {
-        public ClearCounter selectedCounter;
+        public BaseCounter selectedCounterArg;
     }
 
     [SerializeField] private float moveSpeed = 10f;
@@ -18,15 +19,15 @@ public class Player : MonoBehaviour, IKitchenObjectParent
     private Vector3 _lastInteractDir;
     private Vector2 _inputVector;
     private bool _isWalking;
-    private ClearCounter _selectedCounter;
+    private BaseCounter _selectedCounter;
     private KitchenObject _kitchenObject;
 
     private void Awake()
     {
+        //Singleton pattern
         if (Instance != null && Instance != this)
         {
             Debug.LogError("There is more than one Player instance");
-            Destroy(this);
         }
 
         Instance = this;
@@ -55,11 +56,11 @@ public class Player : MonoBehaviour, IKitchenObjectParent
 
         if (Physics.Raycast(transform.position, _lastInteractDir, out RaycastHit hit, interactDistance))
         {
-            if (hit.transform.TryGetComponent(out ClearCounter clearCounter))
+            if (hit.transform.TryGetComponent(out BaseCounter baseCounter))
             {
-                if (_selectedCounter == null && clearCounter != _selectedCounter)
+                if (_selectedCounter == null && baseCounter != _selectedCounter)
                 {
-                    SetSelectedCounter(clearCounter);
+                    SetSelectedCounter(baseCounter);
                 }
             }
             else
@@ -72,7 +73,7 @@ public class Player : MonoBehaviour, IKitchenObjectParent
             SetSelectedCounter(null);
         }
     }
-    
+
     private void Movement()
     {
         Vector3 moveDir = new Vector3(_inputVector.x, 0f, _inputVector.y);
@@ -128,12 +129,12 @@ public class Player : MonoBehaviour, IKitchenObjectParent
         _inputVector = inputVector;
     }
 
-    private void SetSelectedCounter (ClearCounter selectedCounter)
+    private void SetSelectedCounter (BaseCounter selectedCounter)
     {
         _selectedCounter = selectedCounter;
-        
+
         OnSelectedCounterChanged.Invoke(this,
-            new OnSelectedCounterChangedEventArgs { selectedCounter = _selectedCounter });
+            new OnSelectedCounterChangedEventArgs { selectedCounterArg = _selectedCounter });
     }
 
     public bool IsWalking()
