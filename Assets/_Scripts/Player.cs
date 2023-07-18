@@ -37,6 +37,7 @@ public class Player : MonoBehaviour, IKitchenObjectParent
     {
         input.MoveEvent += OnHandleMovement;
         input.InteractEvent += HandleInteract;
+        input.InteractAlternate += HandleAlternateInteract;
     }
 
     private void Update()
@@ -122,6 +123,12 @@ public class Player : MonoBehaviour, IKitchenObjectParent
     {
         if (_selectedCounter != null)
             _selectedCounter.Interact(this);
+    }
+
+    private void HandleAlternateInteract (object sender, EventArgs e)
+    {
+        if (_selectedCounter != null)
+            _selectedCounter.InteractAlternate(this);
     }
 
     private void OnHandleMovement (object sender, Vector2 inputVector)
