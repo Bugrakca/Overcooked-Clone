@@ -11,6 +11,8 @@ public class InputReader : ScriptableObject, PlayerInputActions.IPlayerActions
 
     public event EventHandler InteractEvent = delegate { };
 
+    public event EventHandler InteractAlternate = delegate { };
+
     private PlayerInputActions _playerInput;
 
     private void OnEnable()
@@ -33,6 +35,14 @@ public class InputReader : ScriptableObject, PlayerInputActions.IPlayerActions
         if (context.phase == InputActionPhase.Performed)
         {
             InteractEvent.Invoke(this, EventArgs.Empty);
+        }
+    }
+
+    public void OnInteractAlternative (InputAction.CallbackContext context)
+    {
+        if (context.phase == InputActionPhase.Performed)
+        {
+            InteractAlternate.Invoke(this, EventArgs.Empty);
         }
     }
 
