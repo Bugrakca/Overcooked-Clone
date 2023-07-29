@@ -1,23 +1,34 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class ProgressBarUI : MonoBehaviour
 {
-    [SerializeField] private CuttingCounter cuttingCounter;
+    [SerializeField] private GameObject hasProgressGameObject;
     [SerializeField] private Image barImage;
+
+    private IHasProgress _hasProgress;
 
     private void Start()
     {
-        cuttingCounter.OnProgressChanged += CuttingCounterOnOnProgressChanged;
+        _hasProgress = hasProgressGameObject.GetComponent<IHasProgress>();
+
+        if (_hasProgress == null)
+        {
+            Debug.LogError(
+                $"GameObject {hasProgressGameObject} does not have a component that implements IHasProgress");
+        }
+        else
+        {
+            _hasProgress.OnProgressChanged += HasProgressOnProgressChanged;
+
+            barImage.fillAmount = 0f;
+        }
         
-        barImage.fillAmount = 0f;
         Hide();
+
     }
 
-    private void CuttingCounterOnOnProgressChanged (object sender, CuttingCounter.OnProgressChangedArgs e)
+    private void HasProgressOnProgressChanged (object sender, IHasProgress.OnProgressChangedEventArgs e)
     {
         barImage.fillAmount = e.progressNormalized;
 
