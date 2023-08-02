@@ -35,14 +35,14 @@ public class Player : MonoBehaviour, IKitchenObjectParent
 
     private void Start()
     {
-        input.MoveEvent += OnHandleMovement;
+        input.MoveEvent += HandleMovement;
         input.InteractEvent += HandleInteract;
         input.InteractAlternate += HandleAlternateInteract;
     }
 
     private void Update()
     {
-        Movement();
+        PlayerMovement();
         HandleInteractions();
     }
 
@@ -75,7 +75,7 @@ public class Player : MonoBehaviour, IKitchenObjectParent
         }
     }
 
-    private void Movement()
+    private void PlayerMovement()
     {
         Vector3 moveDir = new Vector3(_inputVector.x, 0f, _inputVector.y);
 
@@ -131,7 +131,7 @@ public class Player : MonoBehaviour, IKitchenObjectParent
             _selectedCounter.InteractAlternate(this);
     }
 
-    private void OnHandleMovement (object sender, Vector2 inputVector)
+    private void HandleMovement (object sender, Vector2 inputVector)
     {
         _inputVector = inputVector;
     }

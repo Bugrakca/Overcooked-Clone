@@ -7,7 +7,7 @@ public class NewBehaviourScript : MonoBehaviour
         LookAt,
         LookAtInverted,
         CameraForward,
-        CameraForvardInverted,
+        CameraForwardInverted,
     }
 
     [SerializeField] private Mode mode;
@@ -29,7 +29,7 @@ public class NewBehaviourScript : MonoBehaviour
         {
             transform.forward = Camera.main.transform.forward;
         }
-        if (mode is Mode.CameraForvardInverted)
+        if (mode is Mode.CameraForwardInverted)
         {
             transform.forward = -Camera.main.transform.forward;
         }
