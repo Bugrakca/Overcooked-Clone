@@ -6,4 +6,5 @@ using UnityEngine.Serialization;
 public class RecipeSO : ScriptableObject
 {
     public List<KitchenObjectSO> kitchenObjectSoList;
+    public string recipeName;
 }
