@@ -153,13 +153,13 @@ public class StoveCounter : BaseCounter, IHasProgress
         }
     }
 
-    private bool HasRecipeWithInput (KitchenObjectsSO inputKitchenObjectSo)
+    private bool HasRecipeWithInput (KitchenObjectSO inputKitchenObjectSo)
     {
         FryingRecipeSO fryingRecipeSo = GetFryingRecipeSoWithInput(inputKitchenObjectSo);
         return fryingRecipeSo != null;
     }
 
-    private KitchenObjectsSO GetOutputForInput (KitchenObjectsSO inputKitchenObjectSo)
+    private KitchenObjectSO GetOutputForInput (KitchenObjectSO inputKitchenObjectSo)
     {
         FryingRecipeSO fryingRecipeSo = GetFryingRecipeSoWithInput(inputKitchenObjectSo);
         if (fryingRecipeSo != null)
@@ -172,7 +172,7 @@ public class StoveCounter : BaseCounter, IHasProgress
         }
     }
 
-    private FryingRecipeSO GetFryingRecipeSoWithInput (KitchenObjectsSO inputKitchenObjectSo)
+    private FryingRecipeSO GetFryingRecipeSoWithInput (KitchenObjectSO inputKitchenObjectSo)
     {
         foreach (var fryingRecipeSo in fryingRecipeSoArray)
         {
@@ -185,7 +185,7 @@ public class StoveCounter : BaseCounter, IHasProgress
         return null;
     }
 
-    private BurningRecipeSO GetBurningRecipeSoWithInput (KitchenObjectsSO inputKitchenObjectSo)
+    private BurningRecipeSO GetBurningRecipeSoWithInput (KitchenObjectSO inputKitchenObjectSo)
     {
         foreach (var burningRecipeSo in burningRecipeSoArray)
         {

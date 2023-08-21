@@ -70,7 +70,7 @@ public class CuttingCounter : BaseCounter, IHasProgress
 
             if (_cuttingProgress >= cuttingRecipeSo.cuttingProgressMax)
             {
-                KitchenObjectsSO outputKitchenObjectSo = GetOutputForInput(GetKitchenObject().GetKitchenObjectSo());
+                KitchenObjectSO outputKitchenObjectSo = GetOutputForInput(GetKitchenObject().GetKitchenObjectSo());
 
                 GetKitchenObject().DestroySelf();
 
@@ -79,13 +79,13 @@ public class CuttingCounter : BaseCounter, IHasProgress
         }
     }
 
-    private bool HasRecipeWithInput (KitchenObjectsSO inputKitchenObjectSo)
+    private bool HasRecipeWithInput (KitchenObjectSO inputKitchenObjectSo)
     {
         CuttingRecipeSO cuttingRecipeSo = GetCuttingRecipeSoWithInput(inputKitchenObjectSo);
         return cuttingRecipeSo != null;
     }
 
-    private KitchenObjectsSO GetOutputForInput (KitchenObjectsSO inputKitchenObjectSo)
+    private KitchenObjectSO GetOutputForInput (KitchenObjectSO inputKitchenObjectSo)
     {
         CuttingRecipeSO cuttingRecipeSo = GetCuttingRecipeSoWithInput(inputKitchenObjectSo);
         if (cuttingRecipeSo != null)
@@ -98,7 +98,7 @@ public class CuttingCounter : BaseCounter, IHasProgress
         }
     }
 
-    private CuttingRecipeSO GetCuttingRecipeSoWithInput (KitchenObjectsSO inputKitchenObjectSo)
+    private CuttingRecipeSO GetCuttingRecipeSoWithInput (KitchenObjectSO inputKitchenObjectSo)
     {
         foreach (var cuttingRecipeSo in cuttingRecipeSoArray)
         {

@@ -8,7 +8,7 @@ public class PlateIconSingleUI : MonoBehaviour
     [SerializeField] private Image image;
 
 
-    public void SetKitchenObjectSo(KitchenObjectsSO kitchenObjectsSo)
+    public void SetKitchenObjectSo(KitchenObjectSO kitchenObjectsSo)
     {
         image.sprite = kitchenObjectsSo.sprite;
     }

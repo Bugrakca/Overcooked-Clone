@@ -5,7 +5,7 @@ public class ContainerCounter : BaseCounter
 {
     public event EventHandler OnPlayerGrabbedObject = delegate { };
 
-    [SerializeField] private KitchenObjectsSO kitchenObjectSo;
+    [SerializeField] private KitchenObjectSO kitchenObjectSo;
 
     public override void Interact (Player player)
     {

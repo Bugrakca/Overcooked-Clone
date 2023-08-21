@@ -7,7 +7,7 @@ public class PlateCompleteVisual : MonoBehaviour
     [Serializable]
     public struct KitchenObjectSoGameObject
     {
-        public KitchenObjectsSO kitchenObjectsSo;
+        public KitchenObjectSO kitchenObjectsSo;
         public GameObject gameObject;
     }
     

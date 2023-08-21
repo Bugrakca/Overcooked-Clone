@@ -8,16 +8,16 @@ public class PlateKitchenObject : KitchenObject
 
     public class OnIngredientAddedEventArgs : EventArgs
     {
-        public KitchenObjectsSO kitchenObjectsSo;
+        public KitchenObjectSO kitchenObjectsSo;
     }
 
 
-    [SerializeField] private List<KitchenObjectsSO> validKitchenObjectsSoList;
+    [SerializeField] private List<KitchenObjectSO> validKitchenObjectsSoList;
 
 
-    private List<KitchenObjectsSO> _kitchenObjectSoList = new List<KitchenObjectsSO>();
+    private List<KitchenObjectSO> _kitchenObjectSoList = new List<KitchenObjectSO>();
 
-    public bool TryAddIngredient(KitchenObjectsSO kitchenObjectsSo)
+    public bool TryAddIngredient(KitchenObjectSO kitchenObjectsSo)
     {
         if (!validKitchenObjectsSoList.Contains(kitchenObjectsSo))
         {
@@ -41,7 +41,7 @@ public class PlateKitchenObject : KitchenObject
         }
     }
 
-    public List<KitchenObjectsSO> GetKitchenObjectSoList()
+    public List<KitchenObjectSO> GetKitchenObjectSoList()
     {
         return _kitchenObjectSoList;
     }
