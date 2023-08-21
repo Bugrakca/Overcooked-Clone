@@ -59,7 +59,7 @@ public class Player : MonoBehaviour, IKitchenObjectParent
         {
             if (hit.transform.TryGetComponent(out BaseCounter baseCounter))
             {
-                if (_selectedCounter == null && baseCounter != _selectedCounter)
+                if (baseCounter != _selectedCounter)
                 {
                     SetSelectedCounter(baseCounter);
                 }
