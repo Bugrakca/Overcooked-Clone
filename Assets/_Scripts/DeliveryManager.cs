@@ -13,10 +13,11 @@ public class DeliveryManager : MonoBehaviour
 
     [SerializeField] private RecipeSOList recipeListSo;
 
-    private List<RecipeSO> waitingRecipeSoList;
-    private float spawnRecipeTimer;
-    private float spawnRecipeTimerMax = 4f;
-    private int waitingRecipesMax = 4;
+    private List<RecipeSO> _waitingRecipeSoList;
+    private float _spawnRecipeTimer;
+    private float _spawnRecipeTimerMax = 4f;
+    private int _waitingRecipesMax = 4;
+    private int _successfulRecipesAmount;
 
     private void Awake()
     {
@@ -27,20 +28,20 @@ public class DeliveryManager : MonoBehaviour
 
         Instance = this;
 
-        waitingRecipeSoList = new List<RecipeSO>();
+        _waitingRecipeSoList = new List<RecipeSO>();
     }
 
     private void Update()
     {
-        spawnRecipeTimer -= Time.deltaTime;
-        if (spawnRecipeTimer <= 0f)
+        _spawnRecipeTimer -= Time.deltaTime;
+        if (_spawnRecipeTimer <= 0f)
         {
-            spawnRecipeTimer = spawnRecipeTimerMax;
+            _spawnRecipeTimer = _spawnRecipeTimerMax;
 
-            if (waitingRecipeSoList.Count < waitingRecipesMax)
+            if (_waitingRecipeSoList.Count < _waitingRecipesMax)
             {
                 RecipeSO waitingRecipeSO = recipeListSo.recipeSOList[Random.Range(0, recipeListSo.recipeSOList.Count)];
-                waitingRecipeSoList.Add(waitingRecipeSO);
+                _waitingRecipeSoList.Add(waitingRecipeSO);
                 
                 OnRecipeSpawned.Invoke(this, EventArgs.Empty);
             }
@@ -49,7 +50,7 @@ public class DeliveryManager : MonoBehaviour
 
     public void DeliverRecipe(PlateKitchenObject plateKitchenObject)
     {
-        foreach (var recipeSo in waitingRecipeSoList)
+        foreach (var recipeSo in _waitingRecipeSoList)
         {
             //Has the same number of ingredients
             if (recipeSo.kitchenObjectSoList.Count == plateKitchenObject.GetKitchenObjectSoList().Count)
@@ -79,7 +80,9 @@ public class DeliveryManager : MonoBehaviour
 
                 if (plateContentMatchesRecipe)
                 {
-                    waitingRecipeSoList.Remove(recipeSo);
+                    _waitingRecipeSoList.Remove(recipeSo);
+
+                    _successfulRecipesAmount++;
                     
                     OnRecipeCompleted.Invoke(this, EventArgs.Empty);
                     OnRecipeSuccess.Invoke(this, EventArgs.Empty);
@@ -94,6 +97,11 @@ public class DeliveryManager : MonoBehaviour
 
     public List<RecipeSO> GetWaitingRecipeSoList()
     {
-        return waitingRecipeSoList;
+        return _waitingRecipeSoList;
+    }
+
+    public int GetSuccessfulRecipesAmount()
+    {
+        return _successfulRecipesAmount;
     }
 }
