@@ -5,7 +5,10 @@ public class GameManager : MonoBehaviour
 {
 
     public event EventHandler OnStateChanged = delegate { };
+    
     public static GameManager Instance { get; private set; }
+
+    [SerializeField] private InputReader inputReader;
     
     private enum State
     {
@@ -32,6 +35,22 @@ public class GameManager : MonoBehaviour
         Instance = this;
         
         _state = State.WaitingToStart;
+    }
+
+    private void Start()
+    {
+        inputReader.PauseEvent += InputReaderOnPauseEvent;
+        inputReader.UnPauseEvent += InputReaderOnUnPauseEvent;
+    }
+
+    private void InputReaderOnUnPauseEvent(object sender, EventArgs e)
+    {
+        UnPauseGame();
+    }
+
+    private void InputReaderOnPauseEvent(object sender, EventArgs e)
+    {
+        PauseGame();
     }
 
     private void Update()
@@ -71,6 +90,24 @@ public class GameManager : MonoBehaviour
         }
         
         Debug.Log(_state);
+    }
+
+    private void PauseGame()
+    {
+        // inputReader.PauseEvent -= InputReaderOnPauseEvent;
+        
+        Time.timeScale = 0f;
+        
+        inputReader.SetMenuUI();
+    }
+
+    private void UnPauseGame()
+    {
+        Time.timeScale = 1f;
+
+        // inputReader.PauseEvent += InputReaderOnPauseEvent;
+        
+        inputReader.SetGamePlay();
     }
 
     public bool IsGamePlaying()

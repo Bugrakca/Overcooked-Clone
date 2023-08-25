@@ -579,6 +579,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 702bd18b4de051846af9e2a8c127eb05, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  inputReader: {fileID: 11400000, guid: 70fd6ae8a11268d4699f35aaa5ba6768, type: 2}
   playButton: {fileID: 123480421}
   quitButton: {fileID: 2039700844}
 --- !u!1 &949179723
@@ -1465,8 +1466,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 510.89, y: -329.09}
-  m_SizeDelta: {x: 1021.7734, y: 658.1741}
+  m_AnchoredPosition: {x: 457.8242, y: -337.5}
+  m_SizeDelta: {x: 915.6417, y: 675}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1732528454
 MonoBehaviour:

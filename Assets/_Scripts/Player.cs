@@ -14,7 +14,7 @@ public class Player : MonoBehaviour, IKitchenObjectParent
     }
 
     [SerializeField] private float moveSpeed = 10f;
-    [SerializeField] private InputReader input;
+    [SerializeField] private InputReader inputReader;
     [SerializeField] private Transform kitchenObjectHoldPoint;
 
     private Vector3 _lastInteractDir;
@@ -36,9 +36,9 @@ public class Player : MonoBehaviour, IKitchenObjectParent
 
     private void Start()
     {
-        input.MoveEvent += HandleMovement;
-        input.InteractEvent += HandleInteract;
-        input.InteractAlternate += HandleAlternateInteract;
+        inputReader.MoveEvent += HandleMovement;
+        inputReader.InteractEvent += HandleInteract;
+        inputReader.InteractAlternate += HandleAlternateInteract;
     }
 
     private void Update()

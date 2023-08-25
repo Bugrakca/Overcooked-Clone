@@ -3025,6 +3025,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e0dad901725b664da63e4e3cf62b866, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  inputReader: {fileID: 11400000, guid: 70fd6ae8a11268d4699f35aaa5ba6768, type: 2}
 --- !u!4 &1218109600
 Transform:
   m_ObjectHideFlags: 0
@@ -4174,7 +4175,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 8
-  input: {fileID: 11400000, guid: 70fd6ae8a11268d4699f35aaa5ba6768, type: 2}
+  inputReader: {fileID: 11400000, guid: 70fd6ae8a11268d4699f35aaa5ba6768, type: 2}
   kitchenObjectHoldPoint: {fileID: 1531485273}
 --- !u!4 &1658552098
 Transform:
