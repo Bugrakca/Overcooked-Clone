@@ -20,6 +20,11 @@ public class BaseCounter : MonoBehaviour, IKitchenObjectParent
         Debug.LogError("BaseCounter.InteractAlternate();");
     }
 
+    public static void ResetStaticData()
+    {
+        OnAnyObjectPlaced = null;
+    }
+
     public Transform GetKitchenObjectFollowTransform()
     {
         return counterTopPoint;

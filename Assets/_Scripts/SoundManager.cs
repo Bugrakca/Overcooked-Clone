@@ -1,11 +1,32 @@
 using System;
 using UnityEngine;
+using UnityEngine.Audio;
 using Random = UnityEngine.Random;
 
 public class SoundManager : MonoBehaviour
 {
-    [SerializeField] private AudioClipRefsSO audioClipRefsSo;
+    public static SoundManager Instance { get; private set; }
     
+    [SerializeField] private AudioClipRefsSO audioClipRefsSo;
+    [SerializeField] private AudioMixer audioMixer;
+
+    public const string SfxKey = "sfxVolume";
+    public const string MusicKey = "musicVolume";
+
+    private float _volume = 1f;
+
+    private void Awake()
+    {
+        if (Instance != null && Instance != this)
+        {
+            Debug.LogError("There is more than one SoundManager instance!");
+        }
+
+        Instance = this;
+        
+        LoadVolume();
+    }
+
     private void Start()
     {
         DeliveryManager.Instance.OnRecipeSuccess += DeliveryManager_OnRecipeSuccess;
@@ -15,6 +36,25 @@ public class SoundManager : MonoBehaviour
         BaseCounter.OnAnyObjectPlaced += BaseCounter_OnAnyObjectPlaced;
         TrashCounter.OnAnyObjectTrashed += TrashCounter_OnAnyObjectTrashed;
         PlayerSounds.OnPlayerMoveSound += PlayerSounds_OnPlayerMoveSound;
+    }
+
+    public void SetVolume(float value)
+    {
+        _volume = value;
+    }
+
+    public float GetVolume()
+    {
+        return _volume;
+    }
+
+    private void LoadVolume()
+    {
+        float musicVolume = PlayerPrefs.GetFloat(MusicKey, 1f);
+        float sfxVolume = PlayerPrefs.GetFloat(SfxKey, 1f);
+
+        audioMixer.SetFloat(OptionsUI.MixerMusic, Mathf.Log10(musicVolume) * 20f);
+        audioMixer.SetFloat(OptionsUI.MixerSoundEffects, Mathf.Log10(sfxVolume) * 20f);
     }
 
     private void PlayerSounds_OnPlayerMoveSound(object sender, EventArgs e)
@@ -57,13 +97,13 @@ public class SoundManager : MonoBehaviour
         PlaySound(audioClipRefsSo.deliveryFail, deliveryCounter.transform.position);
     }
 
-    private void PlaySound(AudioClip audioClip, Vector3 position, float volume = 1f)
+    private void PlaySound(AudioClip audioClip, Vector3 position, float volumeMultiplier = 1f)
     {
-        AudioSource.PlayClipAtPoint(audioClip, position, volume);
+        AudioSource.PlayClipAtPoint(audioClip, position, volumeMultiplier);
     }
-    
-    private void PlaySound(AudioClip[] audioClipArray, Vector3 position, float volume = 1f)
+
+    private void PlaySound(AudioClip[] audioClipArray, Vector3 position, float volumeMultiplier = 1f)
     {
-        PlaySound(audioClipArray[Random.Range(0, audioClipArray.Length)], position, volume);
+        PlaySound(audioClipArray[Random.Range(0, audioClipArray.Length)], position, volumeMultiplier * _volume);
     }
 }

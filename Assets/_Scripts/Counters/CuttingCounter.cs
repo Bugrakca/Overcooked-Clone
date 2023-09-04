@@ -4,7 +4,9 @@ using UnityEngine;
 public class CuttingCounter : BaseCounter, IHasProgress
 {
     public static event EventHandler OnAnyCut = delegate { };
+
     public event EventHandler OnCut = delegate { };
+
     public event EventHandler<IHasProgress.OnProgressChangedEventArgs> OnProgressChanged = delegate { };
 
     [SerializeField] private CuttingRecipeSO[] cuttingRecipeSoArray;
@@ -54,6 +56,11 @@ public class CuttingCounter : BaseCounter, IHasProgress
                 GetKitchenObject().SetKitchenObjectParent(player);
             }
         }
+    }
+
+    public new static void ResetStaticData()
+    {
+        OnAnyCut = null;
     }
 
     public override void InteractAlternate(Player player)

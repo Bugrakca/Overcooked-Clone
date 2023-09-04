@@ -17,6 +17,8 @@ public class MainMenuUI : MonoBehaviour
             inputReader.SetGamePlay();
         });
         quitButton.onClick.AddListener(() => Application.Quit());
+
+        Time.timeScale = 1f;
     }
     
 }

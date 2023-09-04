@@ -5,10 +5,14 @@ public class GameManager : MonoBehaviour
 {
 
     public event EventHandler OnStateChanged = delegate { };
+    public event EventHandler OnGamePaused = delegate { };
+    public event EventHandler OnGamePausedClose = delegate { };
     
     public static GameManager Instance { get; private set; }
 
     [SerializeField] private InputReader inputReader;
+
+    private bool _isGamePaused;
     
     private enum State
     {
@@ -43,14 +47,21 @@ public class GameManager : MonoBehaviour
         inputReader.UnPauseEvent += InputReaderOnUnPauseEvent;
     }
 
-    private void InputReaderOnUnPauseEvent(object sender, EventArgs e)
+    //UnSubscribe all the events when its destroyed or change the scenes. Purpose of "Missing Reference Exception".
+    private void OnDisable()
     {
-        UnPauseGame();
+        inputReader.PauseEvent -= InputReaderOnPauseEvent;
+        inputReader.UnPauseEvent -= InputReaderOnUnPauseEvent;
     }
 
     private void InputReaderOnPauseEvent(object sender, EventArgs e)
     {
         PauseGame();
+    }
+
+    private void InputReaderOnUnPauseEvent(object sender, EventArgs e)
+    {
+        UnPauseGame();
     }
 
     private void Update()
@@ -92,22 +103,29 @@ public class GameManager : MonoBehaviour
         Debug.Log(_state);
     }
 
-    private void PauseGame()
+    public void PauseGame()
     {
         // inputReader.PauseEvent -= InputReaderOnPauseEvent;
-        
         Time.timeScale = 0f;
-        
+        OnGamePaused.Invoke(this, EventArgs.Empty);
+        _isGamePaused = true;
+
         inputReader.SetMenuUI();
     }
 
-    private void UnPauseGame()
+    public void UnPauseGame()
     {
         Time.timeScale = 1f;
-
         // inputReader.PauseEvent += InputReaderOnPauseEvent;
+        OnGamePausedClose.Invoke(this, EventArgs.Empty);
+        _isGamePaused = false;
         
         inputReader.SetGamePlay();
+    }
+
+    public bool IsGamePaused()
+    {
+        return _isGamePaused;
     }
 
     public bool IsGamePlaying()
