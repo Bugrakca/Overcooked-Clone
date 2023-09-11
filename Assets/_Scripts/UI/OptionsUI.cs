@@ -6,11 +6,14 @@ using UnityEngine.UI;
 
 public class OptionsUI : MonoBehaviour
 {
+    public event EventHandler OnControlsRebindButtonEvent = delegate { };
+
     public static OptionsUI Instance { get; private set; }
 
     [SerializeField] private AudioMixer audioMixer;
     [SerializeField] private Slider musicSlider;
     [SerializeField] private Slider soundEffectsSlider;
+    [SerializeField] private Button controlsRebindButton;
     [SerializeField] private Button backButton;
     [SerializeField] private TextMeshProUGUI soundEffectsText;
     [SerializeField] private TextMeshProUGUI musicText;
@@ -26,23 +29,28 @@ public class OptionsUI : MonoBehaviour
         }
 
         Instance = this;
-        
+
         soundEffectsSlider.onValueChanged.AddListener(volume =>
         {
             SoundManager.Instance.SetVolume(volume);
             SetSoundEffectsVolume(SoundManager.Instance.GetVolume());
         });
-        
+
         backButton.onClick.AddListener(Hide);
+        controlsRebindButton.onClick.AddListener(() =>
+        {
+            Hide();
+            OnControlsRebindButtonEvent.Invoke(this, EventArgs.Empty);
+        });
     }
-    
+
     private void Start()
     {
         musicSlider.value = PlayerPrefs.GetFloat(SoundManager.MusicKey, 1f);
         soundEffectsSlider.value = PlayerPrefs.GetFloat(SoundManager.SfxKey, 1f);
 
         GameManager.Instance.OnGamePausedClose += GameManagerGamePausedClose;
-        
+
         UpdateVisual();
         Hide();
     }

@@ -3,7 +3,6 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-
     public event EventHandler OnStateChanged = delegate { };
     public event EventHandler OnGamePaused = delegate { };
     public event EventHandler OnGamePausedClose = delegate { };
