@@ -29,14 +29,6 @@ public class InputReader : ScriptableObject, PlayerInputActions.IPlayerActions, 
 
     private PlayerInputActions _playerInput;
 
-    // private void Awake()
-    // {
-    //     if (PlayerPrefs.HasKey(PlayerPrefsBindings))
-    //     {
-    //         _playerInput.LoadBindingOverridesFromJson(PlayerPrefs.GetString(PlayerPrefsBindings));
-    //     }
-    // }
-
     private void OnEnable()
     {
         if (_playerInput == null)
@@ -103,11 +95,23 @@ public class InputReader : ScriptableObject, PlayerInputActions.IPlayerActions, 
         _playerInput.Player.Disable();
     }
 
-    public void DisableAllInput()
+    private void DisableAllInput()
     {
         _playerInput.Player.Disable();
         _playerInput.MenuUI.Disable();
     }
+
+    public void ResetAllBindings()
+    {
+        _playerInput.RemoveAllBindingOverrides();
+    }
+
+    public void SaveBindings()
+    {
+        PlayerPrefs.SetString(PlayerPrefsBindings, _playerInput.SaveBindingOverridesAsJson());
+        PlayerPrefs.Save();
+    }
+    
 
     public string GetBindingText(Binding binding)
     {
@@ -182,8 +186,7 @@ public class InputReader : ScriptableObject, PlayerInputActions.IPlayerActions, 
                 _playerInput.MenuUI.Enable();
                 onActionRebound();
                 _playerInput.SaveBindingOverridesAsJson();
-                PlayerPrefs.SetString(PlayerPrefsBindings, _playerInput.SaveBindingOverridesAsJson());
-                PlayerPrefs.Save();
+                SaveBindings();
 
             }).WithAction(_playerInput.MenuUI.UnPause).Start();
         }
@@ -193,8 +196,7 @@ public class InputReader : ScriptableObject, PlayerInputActions.IPlayerActions, 
             callback.Dispose();
             _playerInput.Player.Enable();
             onActionRebound();
-            PlayerPrefs.SetString(PlayerPrefsBindings, _playerInput.SaveBindingOverridesAsJson());
-            PlayerPrefs.Save();
+            SaveBindings();
         }).Start();
     }
 }

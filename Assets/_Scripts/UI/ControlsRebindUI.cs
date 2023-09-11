@@ -22,6 +22,7 @@ public class ControlsRebindUI : MonoBehaviour
     [SerializeField] private Button moveRightButton;
     [SerializeField] private TextMeshProUGUI moveRightButtonUIText;
     [SerializeField] private InputReader inputReader;
+    [SerializeField] private Button resetBindingsButton;
 
     private void Awake()
     {
@@ -52,6 +53,12 @@ public class ControlsRebindUI : MonoBehaviour
         moveRightButton.onClick.AddListener(() =>
         {
             RebindBinding(InputReader.Binding.MoveRight, moveRightButton);
+        });
+        resetBindingsButton.onClick.AddListener(() =>
+        {
+            inputReader.ResetAllBindings();
+            UpdateVisual();
+            inputReader.SaveBindings();
         });
     }
 
